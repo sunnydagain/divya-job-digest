@@ -2,46 +2,55 @@
 #
 # Each firm has:
 #   name: display name (used in scoring + email)
-#   ats:  one of greenhouse | lever | workday | unknown | manual
-#   slug: the company identifier inside that ATS (e.g. "actis" on Greenhouse)
+#   ats:  one of greenhouse | lever | bamboohr | workday | unknown | manual
+#   slug: the company identifier inside that ATS (e.g. "blueorchard" -> blueorchard.bamboohr.com)
 #
 # To fill in a slug:
 #   1. Visit the firm's "Careers" page in a browser.
-#   2. Look at the URL of any job posting.
-#      - boards.greenhouse.io/<slug>/jobs/...  -> ats: greenhouse, slug: <slug>
-#      - jobs.lever.co/<slug>/...              -> ats: lever,      slug: <slug>
-#      - <tenant>.wd1.myworkdayjobs.com/...    -> ats: workday   (skipped in v1)
-#      - something else                        -> leave as ats: unknown
-#   3. Edit this file in GitHub (pencil icon, commit to main).
+#   2. Look at the URL of any job posting (or "apply" button).
+#      - boards.greenhouse.io/<slug>/jobs/...       -> ats: greenhouse, slug: <slug>
+#      - jobs.lever.co/<slug>/...                   -> ats: lever,      slug: <slug>
+#      - <slug>.bamboohr.com/careers/...            -> ats: bamboohr,   slug: <slug>
+#      - <tenant>.wd1.myworkdayjobs.com/...         -> ats: workday   (skipped in v1)
+#      - something else                              -> leave as ats: unknown
+#   3. Commit the change to main; the next workflow run picks it up.
 #
-# Firms with ats: unknown are silently skipped — they don't break the run.
+# Firms with ats: unknown or ats: workday are silently skipped — they don't break the run.
 
 tier_1:
   - name: Actis
+    # Acquired by General Atlantic Oct 2024 — now posts via generalatlantic.com/open-roles
+    # which is JS-rendered. Revisit if/when GA exposes a public ATS endpoint.
     ats: unknown
     slug: null
   - name: Helios Investment Partners
-    ats: unknown
-    slug: null
+    # Workday tenant: helios.wd501.myworkdayjobs.com/External (skipped in v1)
+    ats: workday
+    slug: helios
   - name: Development Partners International
+    # No public ATS — apply via email/website form
     ats: unknown
     slug: null
   - name: AfricInvest
+    # Internal website form only, no third-party ATS
     ats: unknown
     slug: null
   - name: LeapFrog Investments
-    ats: unknown
-    slug: null
+    ats: bamboohr
+    slug: leapfrog
   - name: BlueOrchard Finance
-    ats: unknown
-    slug: null
+    ats: bamboohr
+    slug: blueorchard
   - name: Climate Fund Managers
+    # Careers page is currently a placeholder
     ats: unknown
     slug: null
   - name: Ninety One
+    # Site blocks scraping (403). Almost certainly Workday given firm size — verify in browser.
     ats: unknown
     slug: null
   - name: Cordiant Capital
+    # No public careers page found
     ats: unknown
     slug: null
 

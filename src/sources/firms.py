@@ -29,6 +29,8 @@ def fetch(firms_config: dict) -> list[Job]:
                     jobs.extend(_fetch_greenhouse(name, slug, tier))
                 elif ats == "lever":
                     jobs.extend(_fetch_lever(name, slug, tier))
+                elif ats == "bamboohr":
+                    jobs.extend(_fetch_bamboohr(name, slug, tier))
                 elif ats == "workday":
                     log.info("Skipping Workday firm %s (not supported in v1)", name)
                 else:
@@ -81,6 +83,35 @@ def _fetch_lever(name: str, slug: str, tier: str) -> list[Job]:
                 description=item.get("descriptionPlain", "") or item.get("description", "") or "",
                 posted="",
                 source=f"Lever/{slug}",
+                tier=tier,
+            )
+        )
+    return jobs
+
+
+def _fetch_bamboohr(name: str, slug: str, tier: str) -> list[Job]:
+    # BambooHR exposes a public JSON feed at <subdomain>.bamboohr.com/careers/list.
+    # No descriptions are included — only title, department, and location. That means scoring
+    # against description keywords will under-fire; signal mass comes from tier + title + location.
+    url = f"https://{slug}.bamboohr.com/careers/list"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    data = r.json()
+
+    jobs: list[Job] = []
+    for item in data.get("result", []):
+        job_id = item.get("id")
+        loc = item.get("location") or {}
+        loc_parts = [p for p in (loc.get("city"), loc.get("state")) if p]
+        jobs.append(
+            Job(
+                title=(item.get("jobOpeningName") or "").strip(),
+                company=name,
+                location=", ".join(loc_parts),
+                url=f"https://{slug}.bamboohr.com/careers/{job_id}" if job_id else "",
+                description=item.get("departmentLabel", "") or "",
+                posted="",
+                source=f"BambooHR/{slug}",
                 tier=tier,
             )
         )
