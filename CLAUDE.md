@@ -18,7 +18,8 @@ Keep this file under \~250 lines. Keep instructions specific. Surface contradict
 
 Most recent first. One entry per session, dated, ≤2 lines. Update at end of each session per Working Rule #5.
 
-- **2026-05-24 (later)** — Pushed v1 build to GitHub via git (init → commit → merge unrelated histories with `-X ours` → push). Remote is `https://github.com/sunnydagain/divya-job-digest`, branch `main`, commit `b1b2a0e`. CLAUDE.md "How to work with Divya" section rewritten: Claude now drives the terminal directly (git, gh, etc.) rather than walking her through browser clicks. **Open thread:** trigger the workflow manually from the Actions tab and confirm an email arrives.
+- **2026-05-24 (end of day)** — First manual workflow run on GitHub Actions succeeded. v1 is live; the daily cron at 19:00 UTC will now run unattended. CLAUDE.md was moved into the repo root and is committed publicly per Divya's call (commit `ffa8fac`). **Open thread:** confirm the email contents are useful — if results are sparse or noisy, the next levers are filling in ATS slugs in `firms_list.yml` or tuning keywords/weights in `criteria.yml`.
+- **2026-05-24 (later)** — Pushed v1 build to GitHub via git (init → commit → merge unrelated histories with `-X ours` → push). Remote is `https://github.com/sunnydagain/divya-job-digest`, branch `main`, commit `b1b2a0e`. CLAUDE.md "How to work with Divya" section rewritten: Claude now drives the terminal directly (git, gh, etc.) rather than walking her through browser clicks.
 - **2026-05-24** — Wrote the entire v1 codebase locally at `divya-job-digest/` (13 files: src + config + workflow + README). All Python and YAML drafted from CLAUDE.md spec.
 
 ## Project goal
@@ -207,8 +208,17 @@ Walk Divya through these in sequence. Verify each step before moving on.
 5. ~~Add the 5 secrets to GitHub Actions.~~ ✓ Done
 6. ~~Build the app (write source files locally at `divya-job-digest/`).~~ ✓ Done 2026-05-24
 6b. ~~Push to GitHub via git (now lives at `https://github.com/sunnydagain/divya-job-digest`, commit `b1b2a0e`).~~ ✓ Done 2026-05-24
-7. Manually trigger the workflow (Actions tab → workflow → "Run workflow") to test. Check her inbox. **← current step**
-8. Once the test run succeeds, the daily cron is live. No further action needed.
+7. ~~Manually trigger the workflow and confirm email arrives.~~ ✓ Done 2026-05-24
+8. ~~Daily cron is now live (19:00 UTC) — no further action needed.~~ ✓ v1 SHIPPED
+
+## What to do next (post-v1)
+
+v1 is running. The next useful work, in priority order:
+
+1. **Fill in firm ATS slugs.** `config/firms_list.yml` ships with every firm marked `ats: unknown`, so the curated-firms source produces nothing. Each slug is a 30-second lookup (visit careers page → read the URL pattern). Highest leverage upgrade.
+2. **Tune the scoring/keyword bags.** After a week of digests, look for false positives and false negatives — adjust `config/criteria.yml`.
+3. **Workday support** for the firms whose careers pages live on Workday (Brookfield, KKR, etc.). Per-tenant URL discovery needed.
+4. Then the items under "Future upgrades" below.
 
 ### Build artifacts (current state of the codebase)
 
