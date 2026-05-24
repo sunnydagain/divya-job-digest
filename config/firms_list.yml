@@ -1,0 +1,115 @@
+# Curated firms to scrape directly each day.
+#
+# Each firm has:
+#   name: display name (used in scoring + email)
+#   ats:  one of greenhouse | lever | workday | unknown | manual
+#   slug: the company identifier inside that ATS (e.g. "actis" on Greenhouse)
+#
+# To fill in a slug:
+#   1. Visit the firm's "Careers" page in a browser.
+#   2. Look at the URL of any job posting.
+#      - boards.greenhouse.io/<slug>/jobs/...  -> ats: greenhouse, slug: <slug>
+#      - jobs.lever.co/<slug>/...              -> ats: lever,      slug: <slug>
+#      - <tenant>.wd1.myworkdayjobs.com/...    -> ats: workday   (skipped in v1)
+#      - something else                        -> leave as ats: unknown
+#   3. Edit this file in GitHub (pencil icon, commit to main).
+#
+# Firms with ats: unknown are silently skipped — they don't break the run.
+
+tier_1:
+  - name: Actis
+    ats: unknown
+    slug: null
+  - name: Helios Investment Partners
+    ats: unknown
+    slug: null
+  - name: Development Partners International
+    ats: unknown
+    slug: null
+  - name: AfricInvest
+    ats: unknown
+    slug: null
+  - name: LeapFrog Investments
+    ats: unknown
+    slug: null
+  - name: BlueOrchard Finance
+    ats: unknown
+    slug: null
+  - name: Climate Fund Managers
+    ats: unknown
+    slug: null
+  - name: Ninety One
+    ats: unknown
+    slug: null
+  - name: Cordiant Capital
+    ats: unknown
+    slug: null
+
+tier_2:
+  - name: Macquarie Asset Management Green Investment Group
+    ats: unknown
+    slug: null
+  - name: Schroders Greencoat
+    ats: unknown
+    slug: null
+  - name: Foresight Group
+    ats: unknown
+    slug: null
+  - name: Quinbrook Infrastructure Partners
+    ats: unknown
+    slug: null
+  - name: BlackRock Climate Infrastructure
+    ats: unknown
+    slug: null
+  - name: Brookfield Global Transition Fund
+    ats: unknown
+    slug: null
+  - name: Just Climate
+    ats: unknown
+    slug: null
+  - name: Climate Asset Management
+    ats: unknown
+    slug: null
+
+tier_3:
+  - name: Bridges Fund Management
+    ats: unknown
+    slug: null
+  - name: Federated Hermes
+    ats: unknown
+    slug: null
+  - name: M&G Investments
+    ats: unknown
+    slug: null
+  - name: Aviva Investors
+    ats: unknown
+    slug: null
+  - name: Generation Investment Management
+    ats: unknown
+    slug: null
+  - name: Triple Point Investment Management
+    ats: unknown
+    slug: null
+  - name: Pollination
+    ats: unknown
+    slug: null
+
+tier_4:
+  - name: Ares Management
+    ats: unknown
+    slug: null
+  - name: Apollo Global Management
+    ats: unknown
+    slug: null
+  - name: Tikehau Capital
+    ats: unknown
+    slug: null
+  - name: KKR Global Impact
+    ats: unknown
+    slug: null
+  - name: EQT Future
+    ats: unknown
+    slug: null
+  - name: Pantheon Ventures
+    ats: unknown
+    slug: null

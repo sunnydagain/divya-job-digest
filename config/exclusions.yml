@@ -1,0 +1,25 @@
+# Employers to NEVER surface in the digest.
+# Matching: case-insensitive substring — "ifc" matches "International Finance Corporation (IFC)".
+# Keep entries short and distinctive to maximise substring-match coverage.
+
+exclusions:
+  # Current employer (and any subsidiary / fund)
+  - Cygnum Capital
+  - AfricaGoGreen
+  - Africa Go Green
+
+  # AGG (Africa Go Green Fund) LPs — conflicts of interest
+  - British International Investment
+  - BII
+  - KfW
+  - DEG
+  - International Finance Corporation
+  - IFC
+  - African Development Bank
+  - AfDB
+  - Sustainable Energy Fund for Africa
+  - SEFA
+  - Nordic Development Fund
+  - Calvert Impact Capital
+  - OEEB
+  - responsAbility

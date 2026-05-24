@@ -1,0 +1,67 @@
+# Scoring rubric. Each entry: { keywords: [list of case-insensitive substrings], points: int, label: "..." }
+# The label shows up in the email's "fit summary" line for each job that fires the signal.
+#
+# Tier points are applied separately based on firms_list.yml membership (see scoring.py).
+
+tier_points:
+  tier_1: 30
+  tier_2: 20
+  tier_3: 15
+  tier_4: 10
+
+title_signals:
+  - keywords: [director, vp, vice president, principal, avp, head of, managing director]
+    points: 15
+    label: "mid-senior title"
+
+description_signals:
+  - keywords: [private credit, private debt, direct lending, mezzanine]
+    points: 10
+    label: "private credit / debt"
+  - keywords: [climate, sustainability, energy transition, esg, decarboni, net zero, renewable]
+    points: 10
+    label: "climate / ESG"
+  - keywords: [infrastructure, infra debt, infra equity, real asset]
+    points: 5
+    label: "infrastructure"
+  - keywords: [emerging market, africa, asia, developing, frontier]
+    points: 5
+    label: "EM / Africa / Asia"
+  - keywords: [cfa, financial modelling, financial modeling, modelling]
+    points: 5
+    label: "CFA / modelling"
+
+location_signals:
+  - keywords: [london]
+    points: 5
+    label: "London"
+
+# UK location filter (loose substring match). A job's location must contain at least one of these to pass.
+uk_locations:
+  - united kingdom
+  - " uk"
+  - uk,
+  - london
+  - manchester
+  - edinburgh
+  - birmingham
+  - bristol
+  - glasgow
+  - leeds
+  - oxford
+  - cambridge
+  - england
+  - scotland
+  - wales
+
+# Seniority filter — title must contain at least one of these to pass.
+seniority_terms:
+  - director
+  - vp
+  - vice president
+  - principal
+  - avp
+  - associate director
+  - head of
+  - managing director
+  - senior manager
