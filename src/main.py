@@ -94,10 +94,13 @@ def main() -> int:
     jobs = filter_seniority(jobs, criteria_cfg.get("seniority_terms") or [])
     log.info("After seniority filter: %d", len(jobs))
 
-    # Score
+    # Score — raw points first, then normalise to 0–100 against the rubric ceiling
+    # so the number is comparable across config tweaks.
     firms_index = build_firms_index(firms_cfg)
+    max_raw = max_possible_score(criteria_cfg) or 1  # guard against div-by-zero
     for j in jobs:
-        j.score, j.signals = score(j, criteria_cfg, firms_index)
+        raw, j.signals = score(j, criteria_cfg, firms_index)
+        j.score = round(raw * 100 / max_raw)
 
     jobs.sort(key=lambda x: x.score, reverse=True)
     top = jobs[:10]
@@ -110,7 +113,6 @@ def main() -> int:
         top,
         sources_scanned=sources_scanned,
         firms_skipped=firms_skipped,
-        max_score=max_possible_score(criteria_cfg),
         gmail_user=gmail_user,
         gmail_pw=gmail_pw,
         recipient=recipient,

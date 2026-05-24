@@ -17,7 +17,6 @@ def send(
     jobs: list[Job],
     sources_scanned: list[str],
     firms_skipped: int,
-    max_score: int,
     gmail_user: str,
     gmail_pw: str,
     recipient: str,
@@ -26,8 +25,8 @@ def send(
     n = len(jobs)
     subject = f"Daily job digest — {n} match{'es' if n != 1 else ''} — {today}"
 
-    text_body = _render_text(jobs, sources_scanned, firms_skipped, max_score)
-    html_body = _render_html(jobs, sources_scanned, firms_skipped, max_score)
+    text_body = _render_text(jobs, sources_scanned, firms_skipped)
+    html_body = _render_html(jobs, sources_scanned, firms_skipped)
 
     msg = EmailMessage()
     msg["Subject"] = subject
@@ -43,7 +42,7 @@ def send(
     log.info("Email sent to %s", recipient)
 
 
-def _render_text(jobs: list[Job], sources_scanned: list[str], firms_skipped: int, max_score: int) -> str:
+def _render_text(jobs: list[Job], sources_scanned: list[str], firms_skipped: int) -> str:
     if not jobs:
         return (
             "0 matches today.\n\n"
@@ -67,7 +66,7 @@ def _render_text(jobs: list[Job], sources_scanned: list[str], firms_skipped: int
         lines.append(
             f"{i}. {j.title} — {j.company or 'Unknown firm'}"
             f" ({j.tier or 'untiered'})\n"
-            f"   Location: {j.location or 'n/a'} | Posted: {j.posted or 'n/a'} | Score: {j.score} / {max_score}\n"
+            f"   Location: {j.location or 'n/a'} | Posted: {j.posted or 'n/a'} | Score: {j.score} / 100\n"
             f"{salary_line}"
             f"   Fit: {summary}\n"
             f"   Link: {j.url}\n"
@@ -77,7 +76,7 @@ def _render_text(jobs: list[Job], sources_scanned: list[str], firms_skipped: int
     return "\n".join(lines)
 
 
-def _render_html(jobs: list[Job], sources_scanned: list[str], firms_skipped: int, max_score: int) -> str:
+def _render_html(jobs: list[Job], sources_scanned: list[str], firms_skipped: int) -> str:
     if not jobs:
         return f"""<html><body style="font-family:system-ui,sans-serif;max-width:640px;margin:auto;">
 <h2>0 matches today</h2>
@@ -101,7 +100,7 @@ def _render_html(jobs: list[Job], sources_scanned: list[str], firms_skipped: int
   <a href="{escape(j.url)}" style="font-size:1.05em;font-weight:600;">{escape(j.title)}</a>
   <div>{escape(j.company or 'Unknown firm')} — <em>{escape(j.tier or 'untiered')}</em></div>
   <div style="color:#555;font-size:0.9em;">
-    {escape(j.location or 'n/a')} · Posted {escape(j.posted or 'n/a')} · Score <b>{j.score} / {max_score}</b>
+    {escape(j.location or 'n/a')} · Posted {escape(j.posted or 'n/a')} · Score <b>{j.score} / 100</b>
   </div>
   {salary_html}
   <div style="color:#333;font-size:0.9em;">Fit: {escape(summary)}</div>
