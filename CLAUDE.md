@@ -215,12 +215,17 @@ Walk Divya through these in sequence. Verify each step before moving on.
 
 ## What to do next (post-v1)
 
-v1 is running. The next useful work, in priority order:
+v1 ships daily at 19:00 UTC. Recent improvements: score normalised to 0–100, Adzuna salary rendered, dedupe strips legal-form suffixes, BambooHR support added with LeapFrog + BlueOrchard wired. Backlog in priority order:
 
-1. **Fill in firm ATS slugs.** `config/firms_list.yml` ships with every firm marked `ats: unknown`, so the curated-firms source produces nothing. Each slug is a 30-second lookup (visit careers page → read the URL pattern). Highest leverage upgrade.
-2. **Tune the scoring/keyword bags.** After a week of digests, look for false positives and false negatives — adjust `config/criteria.yml`.
-3. **Workday support** for the firms whose careers pages live on Workday (Brookfield, KKR, etc.). Per-tenant URL discovery needed.
-4. Then the items under "Future upgrades" below.
+1. **Re-trigger the workflow once** (Actions tab → Daily job digest → Run workflow) and visually confirm: score reads `/100`, no Climate17 duplicate, BlueOrchard roles appear if any pass the UK filter. This is the only user-side action still open.
+2. **Tier 2 ATS sweep.** Tier 1 only yielded 2 productive firms (LeapFrog, BlueOrchard) because PE/credit skews Workday-and-bespoke. Tier 2 (Foresight, Quinbrook, Brookfield, Schroders Greencoat, Macquarie GIG, BlackRock Climate, Just Climate, Climate Asset Management) is expected to have higher Greenhouse/Lever density. Repeat the same investigation pattern: WebSearch → WebFetch the careers page → curl the candidate ATS endpoint → update `config/firms_list.yml`.
+3. **Tier 3 ATS sweep** (Bridges, Federated Hermes, M&G, Aviva, Generation, Triple Point, Pollination) — same pattern.
+4. **Tier 4 ATS sweep** (Ares, Apollo, Tikehau, KKR Global Impact, EQT Future, Pantheon).
+5. **Tune scoring/criteria.yml** after a week of real digests — only do this once there's data showing false positives or missed obvious hits.
+6. **Workday support.** Would unlock Helios + likely Ninety One, Brookfield, KKR, Ares, Apollo. Workday tenants expose a documented REST endpoint per tenant; needs a small per-tenant config (tenant subdomain, site name). Worth ~half a day.
+7. **JS-rendered careers pages** (Actis via General Atlantic, possibly Cordiant). Headless browser is overkill for a free project — defer unless Tier 2+ also turns out to be JS-heavy.
+8. **DST handling.** Currently `0 19 * * *` UTC means 20:00 London during BST. Either run two crons or compute target time at runtime. Cosmetic; defer.
+9. **Anthropic API re-ranking layer** (per "Future upgrades" below). Optional; requires Claude Pro plan to extend a free tier API key.
 
 ### Build artifacts (current state of the codebase)
 
