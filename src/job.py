@@ -14,3 +14,4 @@ class Job:
     tier: Optional[str] = None
     score: int = 0
     signals: list = field(default_factory=list)
+    salary: str = ""  # pre-formatted, e.g. "£80k–£120k" or "" if not posted

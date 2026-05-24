@@ -55,8 +55,32 @@ def fetch(app_id: str, app_key: str) -> list[Job]:
                     description=item.get("description", "") or "",
                     posted=item.get("created", "")[:10],
                     source="Adzuna",
+                    salary=_format_salary(
+                        item.get("salary_min"),
+                        item.get("salary_max"),
+                        item.get("salary_is_predicted") in (1, "1", True),
+                    ),
                 )
             )
 
     log.info("Adzuna: %d jobs", len(jobs))
     return jobs
+
+
+def _format_salary(smin, smax, predicted: bool) -> str:
+    def k(v: float) -> str:
+        return f"£{int(round(v / 1000))}k"
+
+    if not smin and not smax:
+        return ""
+    if smin and smax and abs(smin - smax) < 1:
+        out = k(smin)
+    elif smin and smax:
+        out = f"{k(smin)}–{k(smax)}"
+    elif smin:
+        out = f"{k(smin)}+"
+    else:
+        out = f"up to {k(smax)}"
+    if predicted:
+        out += " (est.)"
+    return out

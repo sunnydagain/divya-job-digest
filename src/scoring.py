@@ -1,6 +1,17 @@
 from .job import Job
 
 
+def max_possible_score(criteria: dict) -> int:
+    """Highest score a single job could theoretically earn under this rubric.
+    Top tier + all title signals + all description signals + all location signals.
+    Re-derived from criteria.yml so it stays accurate if Divya tunes the bags."""
+    tier_max = max((criteria.get("tier_points") or {}).values(), default=0)
+    title_max = sum(s.get("points", 0) for s in (criteria.get("title_signals") or []))
+    desc_max = sum(s.get("points", 0) for s in (criteria.get("description_signals") or []))
+    loc_max = sum(s.get("points", 0) for s in (criteria.get("location_signals") or []))
+    return tier_max + title_max + desc_max + loc_max
+
+
 def build_firms_index(firms_config: dict) -> dict[str, str]:
     """Map lowercased firm name -> tier key (tier_1, tier_2, ...)."""
     index: dict[str, str] = {}

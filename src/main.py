@@ -7,7 +7,7 @@ import yaml
 
 from .filters import dedupe, exclude_by_employer, filter_seniority, filter_uk
 from .job import Job
-from .scoring import build_firms_index, score
+from .scoring import build_firms_index, max_possible_score, score
 from .sources import adzuna, climate_boards, firms as firms_source
 from . import email_sender
 
@@ -110,6 +110,7 @@ def main() -> int:
         top,
         sources_scanned=sources_scanned,
         firms_skipped=firms_skipped,
+        max_score=max_possible_score(criteria_cfg),
         gmail_user=gmail_user,
         gmail_pw=gmail_pw,
         recipient=recipient,
