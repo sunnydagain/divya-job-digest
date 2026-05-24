@@ -24,9 +24,11 @@ def fetch(firms_config: dict) -> list[Job]:
                 skipped += 1
                 continue
 
+            title_filter = (firm.get("title_contains") or "").strip()
+
             try:
                 if ats == "greenhouse":
-                    jobs.extend(_fetch_greenhouse(name, slug, tier))
+                    jobs.extend(_fetch_greenhouse(name, slug, tier, title_filter))
                 elif ats == "lever":
                     jobs.extend(_fetch_lever(name, slug, tier))
                 elif ats == "bamboohr":
@@ -42,17 +44,24 @@ def fetch(firms_config: dict) -> list[Job]:
     return jobs
 
 
-def _fetch_greenhouse(name: str, slug: str, tier: str) -> list[Job]:
+def _fetch_greenhouse(name: str, slug: str, tier: str, title_contains: str = "") -> list[Job]:
+    # title_contains is a case-insensitive substring filter — needed when a Greenhouse board
+    # hosts multiple brands (e.g. General Atlantic's board includes Actis roles, tagged
+    # in titles like "Associate, Capital Solutions - Actis").
     url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs?content=true"
     r = requests.get(url, headers=HEADERS, timeout=20)
     r.raise_for_status()
     data = r.json()
 
+    needle = title_contains.lower()
     jobs: list[Job] = []
     for item in data.get("jobs", []):
+        title = (item.get("title") or "").strip()
+        if needle and needle not in title.lower():
+            continue
         jobs.append(
             Job(
-                title=item.get("title", "").strip(),
+                title=title,
                 company=name,
                 location=(item.get("location") or {}).get("name", "").strip(),
                 url=item.get("absolute_url", ""),

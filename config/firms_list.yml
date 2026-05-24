@@ -4,6 +4,8 @@
 #   name: display name (used in scoring + email)
 #   ats:  one of greenhouse | lever | bamboohr | workday | unknown | manual
 #   slug: the company identifier inside that ATS (e.g. "blueorchard" -> blueorchard.bamboohr.com)
+#   title_contains: (optional, greenhouse only) case-insensitive substring filter on job title.
+#                   Use when a shared Greenhouse board hosts multiple brands and you only want one.
 #
 # To fill in a slug:
 #   1. Visit the firm's "Careers" page in a browser.
@@ -19,10 +21,11 @@
 
 tier_1:
   - name: Actis
-    # Acquired by General Atlantic Oct 2024 — now posts via generalatlantic.com/open-roles
-    # which is JS-rendered. Revisit if/when GA exposes a public ATS endpoint.
-    ats: unknown
-    slug: null
+    # Acquired by General Atlantic Oct 2024 — posts go on GA's shared Greenhouse board.
+    # Actis roles are tagged in the title (e.g. "Associate, Capital Solutions - Actis").
+    ats: greenhouse
+    slug: generalatlantic
+    title_contains: actis
   - name: Helios Investment Partners
     # Workday tenant: helios.wd501.myworkdayjobs.com/External (skipped in v1)
     ats: workday
@@ -42,11 +45,11 @@ tier_1:
     ats: bamboohr
     slug: blueorchard
   - name: Climate Fund Managers
-    # Careers page is currently a placeholder
-    ats: unknown
-    slug: null
+    ats: bamboohr
+    slug: climatefundmanagers
   - name: Ninety One
-    # Site blocks scraping (403). Almost certainly Workday given firm size — verify in browser.
+    # externalcareers.ninetyone.com is a JS-rendered SPA; no public ATS endpoint detectable.
+    # Probably a custom/branded enterprise ATS. Defer to v1.1.
     ats: unknown
     slug: null
   - name: Cordiant Capital
@@ -56,27 +59,35 @@ tier_1:
 
 tier_2:
   - name: Macquarie Asset Management Green Investment Group
+    # Custom ATS at recruitment.macquarie.com — no public JSON feed
     ats: unknown
     slug: null
   - name: Schroders Greencoat
+    # Uses Oracle Selectminds (schroders.referrals.selectminds.com) — no public feed
     ats: unknown
     slug: null
   - name: Foresight Group
+    # Email-only application (careers@foresightgroup.eu) — no ATS
     ats: unknown
     slug: null
   - name: Quinbrook Infrastructure Partners
+    # No public ATS detected; careers page has no listings or apply links
     ats: unknown
     slug: null
   - name: BlackRock Climate Infrastructure
-    ats: unknown
-    slug: null
+    # Workday tenant: blackrock.wd1.myworkdayjobs.com (skipped in v1)
+    ats: workday
+    slug: blackrock
   - name: Brookfield Global Transition Fund
-    ats: unknown
-    slug: null
+    # Workday tenant: brookfield.wd5.myworkdayjobs.com (skipped in v1)
+    ats: workday
+    slug: brookfield
   - name: Just Climate
+    # Contact-form-only on justclimate.com/careers
     ats: unknown
     slug: null
   - name: Climate Asset Management
+    # On-domain career page, no third-party ATS detected
     ats: unknown
     slug: null
 
